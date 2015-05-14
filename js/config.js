@@ -32,7 +32,7 @@ jQuery(function() {
 
 		jQuery('form .form-button-submit').click(function(e) { e.preventDefault(); jQuery(this).closest('form').submit(); });
 		jQuery('form .form-button-reset').click(function(e) { e.preventDefault(); jQuery(this).closest('form')[0].reset(); });
-	
+
 	// Links
 		jQuery('a').click(function(e) {
 			var t = jQuery(this), h = t.attr('href'), article;

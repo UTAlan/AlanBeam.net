@@ -1,106 +1,31 @@
-<!DOCTYPE HTML>
-<html>
-	<head>
-		<title>AlanBeam.net</title>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<meta name="description" content="" />
-		<meta name="keywords" content="" />
-		<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,600,700" rel="stylesheet" />
-		<script src="js/jquery.min.js"></script>
-		<script src="js/config.js"></script>
-		<script src="js/skel.min.js"></script>
-		<script type="text/javascript">
-		$(document).ready(function() {
-			$(".form-button-submit").click(function() {
-				$("#contact_form").submit();
-				return false;
-			});
-			
-			$(".form-button-reset").click(function() {
-				$("#contact_form").reset();
-				return false;
-			});
-			
-			$("#contact_form").submit(function() { 
-				var user_name       = $('#name').val(); 
-				var user_email      = $('input[name=email]').val();
-				var user_subject    = $('input[name=subject]').val();
-				var user_message    = $('textarea[name=message]').val();
-		
-				var proceed = true;
-				if(user_name==""){ 
-					$('#name').css('border','solid red 1px'); 
-					proceed = false;
-				}
-				if(user_email==""){ 
-					$('input[name=email]').css('border','solid red 1px'); 
-					proceed = false;
-				}
-				if(user_subject=="") {    
-					$('input[name=subject]').css('border','solid red 1px'); 
-					proceed = false;
-				}
-				if(user_message=="") {  
-					$('textarea[name=message]').css('border','solid red 1px'); 
-					proceed = false;
-				}
+<?php
+require_once("include/config.php");
 
-				if(proceed) {
-					post_data = {'userName':user_name, 'userEmail':user_email, 'userSubject':user_subject, 'userMessage':user_message};
-			
-					$.post('contact.php', post_data, function(response) {  
-						if(response.type == 'error') {
-							output = '<div class="error">'+response.text+'</div>';
-						} else {
-							output = '<div class="success">'+response.text+'</div>';
-							$('#contact_form input').val(''); 
-							$('#contact_form textarea').val(''); 
-						}				
-						$("#result").hide().html(output).slideDown();
-					}, 'json');
-				}
-				
-				return false;
-			});
-	
-			$("#contact_form input, #contact_form textarea").keyup(function() { 
-				$("#contact_form input, #contact_form textarea").css('border','none'); 
-				$("#result").slideUp();
-			});
-	
-		});
-		</script>
-		<noscript>
-			<link rel="stylesheet" href="css/skel-noscript.css" />
-			<link rel="stylesheet" href="css/style.css" />
-			<link rel="stylesheet" href="css/style-desktop.css" />
-		</noscript>
-		<!--[if lte IE 9]><link rel="stylesheet" href="css/ie9.css" /><![endif]-->
-		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><link rel="stylesheet" href="css/ie8.css" /><![endif]-->
-		<!--[if lte IE 7]><link rel="stylesheet" href="css/ie7.css" /><![endif]-->
-	</head>
-	<body>
-		<!-- Nav -->
-		<nav id="nav">
-			<ul class="container">
-				<li><a href="#top">Top</a></li>
-				<li><a href="#portfolio">Portfolio</a></li>
-				<li><a href="#contact">Contact</a></li>
-			</ul>
-		</nav>
+// Get "Home" content
+$home_img = "images/me.jpg";
+$home_welcome = "<h1>Welcome to <strong>AlanBeam.net</strong></h1>";
+$home_bio = "<p>I am Alan Beam:<br />- a follower of Christ<br />- a husband<br />- a father of two<br />- a web developer</p>";
+
+// Get Portfolio content
+$portfolio_welcome = "<span>These are websites I have designed and/or developed over the past few years.</span>";
+$db->orderBy("location", "ASC");
+$portfolio_items = $db->get("portfolio");
+
+require_once("include/header.php");
+?>
 
 		<!-- Home -->
 		<div class="wrapper wrapper-style1 wrapper-first">
 			<article class="container" id="top">
 				<div class="row">
 					<div class="4u">
-						<span class="me image image-full"><img src="images/me.jpg" alt="" /></span>
+						<span class="me image image-full"><img src="<?php echo $home_img; ?>" alt="Alan Beam" /></span>
 					</div>
 					<div class="8u">
 						<header>
-							<h1>Welcome to <strong>AlanBeam.net</strong></h1>
+							<?php echo $home_welcome; ?>
 						</header>
-						<p>I am Alan Beam:<br />- a follower of Christ<br />- a husband<br />- a father of two<br />- a web developer</p>
+						<?php echo $home_bio; ?>
 						<a href="#portfolio" class="button button-big">See my portfolio</a>
 					</div>
 				</div>
@@ -112,50 +37,29 @@
 			<article id="portfolio">
 				<header>
 					<h2>Portfolio</h2>
-					<span>These are websites I have designed and developed over the past few years.</span>
+					<?php echo $portfolio_welcome; ?>
 				</header>
 				<div class="container">
 					<div class="row">
 						<div class="12u">
 						</div>
 					</div>
-					<div class="row">
-						<div class="4u">
-							<article class="box box-style2">
-								<a href="http://www.ginnibeam.net" class="image image-full"><img src="images/portfolio01.jpg" alt="" /></a>
-								<h3><a href="http://www.ginnibeam.net">ginniBeam.net</a></h3>
-								<p>Personal website I built for my wife. Includes a blog, her writings, a photo gallery, and databases for her favorite quotes and a collection of songs with names in them.</p>
-							</article>
-						</div>
-						<div class="4u">
-							<article class="box box-style2">
-								<a href="http://www.havepest.net" class="image image-full"><img src="images/portfolio02.jpg" alt="" /></a>
-								<h3><a href="http://www.havepest.net">Have Pesticide<br />Will Travel</a></h3>
-								<p>Gave a local pesticide company a new website for advertising their business.</p>
-							</article>
-						</div>
-						<div class="4u">
-							<article class="box box-style2">
-								<a href="http://www.12lions.com" class="image image-full"><img src="images/portfolio03.jpg" alt="" /></a>
-								<h3><a href="http://www.12lions.com">12Lions.com</a></h3>
-								<p>A blog I built for a friend to discuss, among other things, theology as it relates to current events.</p>
-							</article>
-						</div>
-					</div>
-					<div class="row">
-						<div class="4u"></div>
-						<div class="4u">
-							<article class="box box-style2">
-								<a href="http://www.jesisteiber.com" class="image image-full"><img src="images/portfolio04.jpg" alt="" /></a>
-								<h3><a href="http://www.jesisteiber.com">JesiSteiber.com</a></h3>
-								<p>A personal website I built for my mom. Includes a blog and a photo gallery.</p>
-							</article>
-						</div>
-					</div>
+					<?php
+					foreach($portfolio_items as $k=>$item) {
+						if($k % 3 == 0) {
+							if($k > 0) {
+								echo "</div> <!-- </div class='row'> -->\n";
+							}
+							echo "<div class='row'>\n";
+						}
+
+						echo "<div class='4u'><article class='box box-style2'>\n";
+						echo "<a href='{$item['url']}' class='image image-full'><img src='{$item['img']}' alt='' /></a>\n";
+						echo "<h3><a href='{$item['url']}'>{$item['name']}</a></h3>";
+						echo "</article></div> <!-- </div class='4u'> -->";
+					}
+					?>
 				</div>
-				<footer>
-					<a href="#contact" class="button button-big">Get in touch with me</a>
-				</footer>
 			</article>
 		</div>
 
@@ -205,9 +109,10 @@
 							<hr />
 							<h3>Find me on ...</h3>
 							<ul class="social">
+								<li class="github"><a href="http://github.com/UTAlan" class="fa fa-github"><span>Github</span></a></li>
 								<li class="twitter"><a href="http://twitter.com/UTAlan" class="fa fa-twitter"><span>Twitter</span></a></li>
-								<li class="facebook"><a href="http://www.facebook.com/UTAlan" class="fa fa-facebook"><span>Facebook</span></a></li>
-								<li class="linkedin"><a href="https://www.linkedin.com/profile/view?id=40014554" class="fa fa-linkedin"><span>LinkedIn</span></a></li>
+								<li class="facebook"><a href="http://facebook.com/UTAlan" class="fa fa-facebook"><span>Facebook</span></a></li>
+								<li class="linkedin"><a href="https://linkedin.com/profile/view?id=40014554" class="fa fa-linkedin"><span>LinkedIn</span></a></li>
 								<li class="googleplus"><a href="https://plus.google.com/+AlanBeam" class="fa fa-google-plus"><span>Google+</span></a></li>
 							</ul>
 							<hr />
@@ -216,21 +121,21 @@
 				</div>
 				<footer>
 					<ul id="copyright">
-						<li>&copy; <?php echo date("Y"); ?> Alan Beam</li>
+						<li>&copy; 2006 - <?php echo date("Y"); ?> Alan Beam</li>
 					</ul>
 				</footer>
 			</article>
 		</div>
 
-		<script>
-		    (function(f,b){
-		        var c;
-		        f.hj=f.hj||function(){(f.hj.q=f.hj.q||[]).push(arguments)};
-		        f._hjSettings={hjid:13709, hjsv:3};
-		        c=b.createElement("script");c.async=1;
-		        c.src="//static.hotjar.com/c/hotjar-13709.js?sv=3";
-		        b.getElementsByTagName("head")[0].appendChild(c); 
-		    })(window,document);
-		</script>
+		<!-- JAVASCRIPT -->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/config.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/custom.js"></script>
+		<noscript>
+			<link rel="stylesheet" href="css/skel-noscript.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-desktop.css" />
+		</noscript>
 	</body>
 </html>
